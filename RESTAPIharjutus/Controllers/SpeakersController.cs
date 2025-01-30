@@ -29,7 +29,7 @@ public class SpeakersController : Controller
 
         return query.ToList();
     } 
-    [HttpPost("{id}")]
+    [HttpGet("{id}")]
     public ActionResult<TextReader> GetSpeaker(int id)
     {
         var speaker = _context.Speakers!.Find(id);
@@ -59,13 +59,18 @@ public class SpeakersController : Controller
     public ActionResult<Speaker> PostSpeaker(Speaker speaker)
     {
         var dbSpeaker = _context.Speakers!.Find(speaker.Id);
+        var email = speaker.Email;
         if (dbSpeaker == null)
         {
             _context.Add(speaker);
             _context.SaveChanges();
-
             return CreatedAtAction(nameof(GetSpeaker), new { Id = speaker.Id }, speaker);
         }
+        if ()
+        {
+            return BadRequest();
+        }
+
         else
         {
             return Conflict();

@@ -1,0 +1,6 @@
+@ExercisesRESTAPI_HostAddress = http://localhost:5281
+
+GET {{ExercisesRESTAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -27,7 +27,7 @@ namespace ITB2203Application.Controllers
 
             return query.ToList();
         }
-        [HttpPost("{id}")]
+        [HttpGet("{id}")]
         public ActionResult<TextReader> GetAttendee(int id)
         {
             var attendee = _context.Attendees!.Find(id);
