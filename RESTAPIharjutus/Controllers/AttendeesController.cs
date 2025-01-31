@@ -57,6 +57,7 @@ namespace ITB2203Application.Controllers
         public ActionResult<Attendee> PostAttendee(Attendee attendee)
         {
             var dbAttendee = _context.Attendees!.Find(attendee.Id);
+
             if (dbAttendee == null)
             {
                 _context.Add(attendee);
