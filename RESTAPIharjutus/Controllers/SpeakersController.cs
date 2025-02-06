@@ -59,22 +59,21 @@ public class SpeakersController : Controller
     public ActionResult<Speaker> PostSpeaker(Speaker speaker)
     {
         var dbSpeaker = _context.Speakers!.Find(speaker.Id);
-        var email = speaker.Email;
-        if (dbSpeaker == null)
-        {
-            _context.Add(speaker);
-            _context.SaveChanges();
-            return CreatedAtAction(nameof(GetSpeaker), new { Id = speaker.Id }, speaker);
-        }
-        if ()
-        {
-            return BadRequest();
-        }
+            if (!speaker.Email.Contains('@'))
+            {
+                return BadRequest();
+            }
+            if (dbSpeaker == null)
+            {
+                _context.Add(speaker);
+                _context.SaveChanges();
 
-        else
-        {
-            return Conflict();
-        }
+                return CreatedAtAction(nameof(GetSpeaker), new { Id = speaker.Id }, speaker);
+            }          
+            else
+            {
+                return Conflict();
+            }
     }
     [HttpDelete("{id}")]
     public IActionResult DeleteSpeaker(int id)

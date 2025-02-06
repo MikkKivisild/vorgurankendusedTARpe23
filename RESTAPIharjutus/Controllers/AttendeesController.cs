@@ -1,6 +1,8 @@
 ﻿using ITB2203Application.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ITB2203Application.Controllers
 {
@@ -57,7 +59,20 @@ namespace ITB2203Application.Controllers
         public ActionResult<Attendee> PostAttendee(Attendee attendee)
         {
             var dbAttendee = _context.Attendees!.Find(attendee.Id);
+            var dbEvent = _context.Events!.Find(attendee.EventId);
+            if (!attendee.Email.Contains('@'))
+            {
+                return BadRequest();
+            }
+            if (dbEvent == null)
+            {
+                return NotFound();
+            }
 
+            if (attendee.RegistrationTime > dbEvent.Date)
+            {
+                return BadRequest();
+            } 
             if (dbAttendee == null)
             {
                 _context.Add(attendee);
