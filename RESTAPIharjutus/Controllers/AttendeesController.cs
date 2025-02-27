@@ -59,6 +59,7 @@ namespace ITB2203Application.Controllers
         public ActionResult<Attendee> PostAttendee(Attendee attendee)
         {
             var dbAttendee = _context.Attendees!.Find(attendee.Id);
+            var dbAttendeeEmail = _context.Attendees!.Find(attendee.Email);
             var dbEvent = _context.Events!.Find(attendee.EventId);
             if (!attendee.Email.Contains('@'))
             {
@@ -72,7 +73,11 @@ namespace ITB2203Application.Controllers
             if (attendee.RegistrationTime > dbEvent.Date)
             {
                 return BadRequest();
-            } 
+            }
+            if (dbAttendeeEmail != null)
+            {
+                return BadRequest();
+            }
             if (dbAttendee == null)
             {
                 _context.Add(attendee);
