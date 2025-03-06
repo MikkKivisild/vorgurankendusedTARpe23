@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ITB2203Application.Controllers
@@ -19,7 +20,7 @@ namespace ITB2203Application.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Attendee>> GetAtendees(string? name = null, string? email = null)
         {
-            var query = _context.Attendees!.AsQueryable();
+            var query = _context.Attendees.AsQueryable();
 
             if (name != null)
                 query = query.Where(x => x.Name != null && x.Name.ToUpper().Contains(name.ToUpper()));
@@ -58,13 +59,11 @@ namespace ITB2203Application.Controllers
         [HttpPost]
         public ActionResult<Attendee> PostAttendee(Attendee attendee)
         {
-            var dbAttendee = _context.Attendees!.Find(attendee.Id);
-            var dbAttendeeEmail = _context.Attendees!.Find(attendee.Email);
-            var dbEvent = _context.Events!.Find(attendee.EventId);
             if (!attendee.Email.Contains('@'))
             {
                 return BadRequest();
             }
+            var dbEvent = _context.Events!.Find(attendee.EventId);
             if (dbEvent == null)
             {
                 return NotFound();
@@ -74,10 +73,14 @@ namespace ITB2203Application.Controllers
             {
                 return BadRequest();
             }
-            if (dbAttendeeEmail != null)
+
+            var query = _context.Attendees!.FirstOrDefault(x => x.Email == attendee.Email);
+            if (query != null)
             {
                 return BadRequest();
             }
+
+            var dbAttendee = _context.Attendees!.Find(attendee.Id);
             if (dbAttendee == null)
             {
                 _context.Add(attendee);
@@ -85,6 +88,7 @@ namespace ITB2203Application.Controllers
 
                 return CreatedAtAction(nameof(GetAttendee), new { Id = attendee.Id }, attendee);
             }
+
             else
             {
                 return Conflict();

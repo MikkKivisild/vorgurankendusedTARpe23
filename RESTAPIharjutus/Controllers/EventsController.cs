@@ -62,7 +62,7 @@ namespace ITB2203Application.Controllers
                 _context.Add(@event);
                 _context.SaveChanges();
 
-                return CreatedAtAction(nameof(GetEvent), new { Id = @event.Id }, @event);
+                return CreatedAtAction(nameof(GetEvent), new { @event.Id }, @event);
             }
             else
             {
