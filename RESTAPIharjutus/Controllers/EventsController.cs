@@ -57,6 +57,11 @@ namespace ITB2203Application.Controllers
         public ActionResult<Event> PostEvent(Event @event)
         {
             var dbEvent = _context.Events!.Find(@event.Id);
+            var dbSpeaker = _context.Speakers!.Find(@event.SpeakerId);
+            if (dbSpeaker == null)
+            {
+                return NotFound();
+            }
             if (dbEvent == null)
             {
                 _context.Add(@event);

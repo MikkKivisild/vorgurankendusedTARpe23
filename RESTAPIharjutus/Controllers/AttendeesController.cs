@@ -18,15 +18,19 @@ namespace ITB2203Application.Controllers
             _context = context;
         }
         [HttpGet]
-        public ActionResult<IEnumerable<Attendee>> GetAtendees(string? name = null, string? email = null)
+        public ActionResult<IEnumerable<Attendee>> GetAttendees(string? name = null, string? email = null, int? daysBeforeEvent = null)
         {
-            var query = _context.Attendees.AsQueryable();
+            var query = _context.Attendees!.AsQueryable();
 
             if (name != null)
                 query = query.Where(x => x.Name != null && x.Name.ToUpper().Contains(name.ToUpper()));
-
             if (email != null)
                 query = query.Where(x => x.Email != null && x.Email.ToUpper().Contains(email.ToUpper()));
+            if (daysBeforeEvent != null)
+            {
+                double dayse = double.Parse(daysBeforeEvent.ToString());
+                query = query.Where(atd => _context.Events.Any(x => x.Id == atd.EventId && (x.Date - atd.RegistrationTime) > TimeSpan.FromDays(dayse)));
+            }
 
             return query.ToList();
         }
