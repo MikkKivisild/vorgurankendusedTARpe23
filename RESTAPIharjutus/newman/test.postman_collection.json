@@ -2,8 +2,7 @@
 	"info": {
 		"_postman_id": "bbf1a650-5626-466f-a51a-a1502a4a8d8d",
 		"name": "Kontrollöö Event",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "9319536"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{

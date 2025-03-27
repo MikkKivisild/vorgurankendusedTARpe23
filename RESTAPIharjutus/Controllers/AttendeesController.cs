@@ -31,7 +31,6 @@ namespace ITB2203Application.Controllers
                 double dayse = double.Parse(daysBeforeEvent.ToString());
                 query = query.Where(atd => _context.Events.Any(x => x.Id == atd.EventId && (x.Date - atd.RegistrationTime) > TimeSpan.FromDays(dayse)));
             }
-
             return query.ToList();
         }
         [HttpGet("{id}")]
